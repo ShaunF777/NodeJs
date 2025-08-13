@@ -18,8 +18,11 @@ const server = http.createServer((req, res) => {
     } else if (pathName === '/product') {
         res.end('This is the product route');
     } else {
-        res.writeHead(404);
-        res.end('Page not found!');
+        res.writeHead(404, { // Never send headers after the response
+            'Content-type': 'text/html',
+            'my-own-header': 'hello-world'
+        });
+        res.end('<h1>Page not found!</h1>');
     }
         
 });
