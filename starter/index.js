@@ -24,8 +24,9 @@ const replaceTemplate = (temp, product) => {
     output = output.replace(/{%QUANTITY%}/g, product.quantity); 
     output = output.replace(/{%DESCRIPTION%}/g, product.description); 
     output = output.replace(/{%ID%}/g, product.id); 
-  
+    // Organic is a boolean, to hide the badge in template-product.html
     if (!product.organic) output = output.replace(/{%NOT_ORGANIC%}/g, 'not-organic'); 
+    return output; // output final html
 }
 
 const tempOverview = fs.readFileSync(`${__dirname}/templates/template-overview.html`, 'utf8');
@@ -44,11 +45,10 @@ const server = http.createServer((req, res) => {
     if(pathName === '/' || pathName === '/overview') {
         res.writeHead(200, {'Content-type': 'text/html'});
 
-        // Loop over dataObj list, each iteration returning e
-        //  we will replace the placeholders 
-        // in the template card with the current product
-        // which is element
-        const cardsHtml = dataObj.map(el => replaceTemplate(tempCard, el))
+        // Loop over dataObj list, in each iteration we will replace the placeholders in the template card 
+        // with the current product which is element. Replacing the array with the 5 final product cards.
+        const cardsHtml = dataObj.map(element => replaceTemplate(tempCard, element));
+        console.log(cardsHtml);
 
         res.end(tempOverview);
     
