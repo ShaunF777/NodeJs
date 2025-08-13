@@ -9,6 +9,25 @@ const url = require('url');
 ///////////////////////
 // SERVER
 // (TOP Level Code) Not a problem using sync because it only executes once at startup
+const replaceTemplate = (temp, product) => {
+    // Use 'let' so we can mutate output's value as needed
+    /* Now one small trick that we have to use here is to actually not use the quotes,
+    but instead use a regular expression. And that's because there might be multiple instances of this placeholder
+    and so the trick is to wrap this in a regular expression and use the g-flag then on it.
+    Which means global and so this will make it so that all of these placeholders will get replaced
+    and not just the first one that occurs. */
+    let output = temp.replace(/{%PRODUCTNAME%}/g, product.productName); 
+    output = output.replace(/{%IMAGE%}/g, product.image); 
+    output = output.replace(/{%PRICE%}/g, product.price); 
+    output = output.replace(/{%FROM%}/g, product.from); 
+    output = output.replace(/{%NUTRIENTS%}/g, product.nutrients); 
+    output = output.replace(/{%QUANTITY%}/g, product.quantity); 
+    output = output.replace(/{%DESCRIPTION%}/g, product.description); 
+    output = output.replace(/{%ID%}/g, product.id); 
+  
+    if (!product.organic) output = output.replace(/{%NOT_ORGANIC%}/g, 'not-organic'); 
+}
+
 const tempOverview = fs.readFileSync(`${__dirname}/templates/template-overview.html`, 'utf8');
 const tempCard = fs.readFileSync(`${__dirname}/templates/template-card.html`, 'utf8');
 const tempProduct = fs.readFileSync(`${__dirname}/templates/template-product.html`, 'utf8');
@@ -25,7 +44,11 @@ const server = http.createServer((req, res) => {
     if(pathName === '/' || pathName === '/overview') {
         res.writeHead(200, {'Content-type': 'text/html'});
 
-        
+        // Loop over dataObj list, each iteration returning e
+        //  we will replace the placeholders 
+        // in the template card with the current product
+        // which is element
+        const cardsHtml = dataObj.map(el => replaceTemplate(tempCard, el))
 
         res.end(tempOverview);
     
