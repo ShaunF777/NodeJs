@@ -47,10 +47,11 @@ const server = http.createServer((req, res) => {
 
         // Loop over dataObj list, in each iteration we will replace the placeholders in the template card 
         // with the current product which is element. Replacing the array with the 5 final product cards.
-        const cardsHtml = dataObj.map(element => replaceTemplate(tempCard, element));
-        console.log(cardsHtml);
+        const cardsHtml = dataObj.map(element => replaceTemplate(tempCard, element)).join(''); // add them together in 1 html
+        const output = tempOverview.replace('{%PRODUCT_CARDS%}', cardsHtml);
+        //console.log(cardsHtml);
 
-        res.end(tempOverview);
+        res.end(output);
     
     // Product page
     } else if (pathName === '/product') {
