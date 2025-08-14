@@ -28,12 +28,12 @@ const server = http.createServer((req, res) => {
         res.writeHead(200, {'Content-type': 'text/html'}); // Tells browser to expect HTML
         /*
         "map" indexes through each item in dataObj and runs replaceTemplate for each, returning a 
-        new array of HTML strings. _ is just a changing index number for each item in the array. 
-        _ gets passed to replaceTemplate as the product data index.
+        new array of HTML strings. el is just a changing index number for each item in the array. 
+        el gets passed to replaceTemplate as the product data index.
         "join('')" replaces the commas with '' combining all the HTML strings into one big string
         Finally cardsHtml becomes an string thats populated with the 5 product cards
         */
-        const cardsHtml = dataObj.map(_ => replaceTemplate(tempCard, _)).join('');
+        const cardsHtml = dataObj.map(el => replaceTemplate(tempCard, el)).join('');
         // Output becomes the template-overview.html, but with the cardsHtlm inserted 
         const output = tempOverview.replace('{%PRODUCT_CARDS%}', cardsHtml);
 
