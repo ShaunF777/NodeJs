@@ -54,12 +54,15 @@ const server = http.createServer((req, res) => {
         //console.log(cardsHtml);
 
         res.end(output);
-    
-    // Product page
+        
+        // Product page
     } else if (pathname === '/product') {
-        console.log(query);
-        res.end('This is the product route');
-    
+        res.writeHead(200, {'Content-type': 'text/html'});
+        const product = dataObj[query.id]; //Get product number from the query
+        const output = replaceTemplate(tempProduct, product) //Run function with new product number
+        //res.end('This is the product route');
+        
+        res.end(output);
     // API
     } else if (pathname === '/api') {
         // More efficiant, only pasing the data that was once read in top code
