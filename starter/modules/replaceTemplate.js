@@ -1,4 +1,4 @@
-module.export = (temp, product) => {
+module.exports = (temp, product) => {
     // Use 'let' so we can mutate output's value as needed
     // Replace all placeholders in the template with product data using regular expressions.
     // The /g flag means "global", so it replaces every occurrence, not just the first.
