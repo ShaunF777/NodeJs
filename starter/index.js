@@ -38,12 +38,13 @@ const dataObj = JSON.parse(data); // Parse it into an object
 
 // Create Server
 const server = http.createServer((req, res) => {
-    console.log(req.url);
-    console.log(url.parse(req.url, true));
-    const pathName = req.url; //Parse variables from the url
+    //console.log(req.url);
+    //console.log(url.parse(req.url, true)); // true to parse the quiry into an object
+    const {query, pathname} = url.parse(req.url, true); //Destructuring to assign 2x const from an object 
+    //const pathName = req.url; //Parse variables from the url
 
     // Overview page
-    if(pathName === '/' || pathName === '/overview') {
+    if(pathname === '/' || pathname === '/overview') {
         res.writeHead(200, {'Content-type': 'text/html'});
 
         // Loop over dataObj list, in each iteration we will replace the placeholders in the template card 
@@ -55,11 +56,12 @@ const server = http.createServer((req, res) => {
         res.end(output);
     
     // Product page
-    } else if (pathName === '/product') {
+    } else if (pathname === '/product') {
+        console.log(query);
         res.end('This is the product route');
     
     // API
-    } else if (pathName === '/api') {
+    } else if (pathname === '/api') {
         // More efficiant, only pasing the data that was once read in top code
         res.writeHead(200, { 'Content-type': 'application/json'}); // to send json
         res.end(data); // Sending raw json data
