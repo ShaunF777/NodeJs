@@ -11,11 +11,8 @@ const url = require('url');
 // (TOP Level Code) Not a problem using sync because it only executes once at startup
 const replaceTemplate = (temp, product) => {
     // Use 'let' so we can mutate output's value as needed
-    /* Now one small trick that we have to use here is to actually not use the quotes,
-    but instead use a regular expression. And that's because there might be multiple instances of this placeholder
-    and so the trick is to wrap this in a regular expression and use the g-flag then on it.
-    Which means global and so this will make it so that all of these placeholders will get replaced
-    and not just the first one that occurs. */
+    // Replace all placeholders in the template with product data using regular expressions.
+    // The /g flag means "global", so it replaces every occurrence, not just the first.
     let output = temp.replace(/{%PRODUCTNAME%}/g, product.productName); 
     output = output.replace(/{%IMAGE%}/g, product.image); 
     output = output.replace(/{%PRICE%}/g, product.price); 
@@ -24,9 +21,9 @@ const replaceTemplate = (temp, product) => {
     output = output.replace(/{%QUANTITY%}/g, product.quantity); 
     output = output.replace(/{%DESCRIPTION%}/g, product.description); 
     output = output.replace(/{%ID%}/g, product.id); 
-    // Organic is a boolean, to hide the badge in template-product.html
+    // If product is not organic, add a class to hide the organic badge in template-product.html
     if (!product.organic) output = output.replace(/{%NOT_ORGANIC%}/g, 'not-organic'); 
-    return output; // output final html
+    return output; // Return the final HTML string
 }
 
 const tempOverview = fs.readFileSync(`${__dirname}/templates/template-overview.html`, 'utf8');
@@ -34,48 +31,53 @@ const tempCard = fs.readFileSync(`${__dirname}/templates/template-card.html`, 'u
 const tempProduct = fs.readFileSync(`${__dirname}/templates/template-product.html`, 'utf8');
 
 const data = fs.readFileSync(`${__dirname}/dev-data/data.json`, 'utf8');
-const dataObj = JSON.parse(data); // Parse it into an object
+const dataObj = JSON.parse(data); // Convert JSON string to a JavaScript object/array
 
 // Create Server
 const server = http.createServer((req, res) => {
-    //console.log(req.url);
-    //console.log(url.parse(req.url, true)); // true to parse the quiry into an object
-    const {query, pathname} = url.parse(req.url, true); //Destructuring to assign 2x const from an object 
-    //const pathName = req.url; //Parse variables from the url
+    /*console.log(req.url);
+    console.log(url.parse(req.url, true));
+    parse breaks the URL into parts (like path and query). With true, 
+    the query string is parsed into an object, making it easier to access values. */
+    const {query, pathname} = url.parse(req.url, true); // Parse URL and extract query parameters and path
 
     // Overview page
     if(pathname === '/' || pathname === '/overview') {
-        res.writeHead(200, {'Content-type': 'text/html'});
-
-        // Loop over dataObj list, in each iteration we will replace the placeholders in the template card 
-        // with the current product which is element. Replacing the array with the 5 final product cards.
-        const cardsHtml = dataObj.map(element => replaceTemplate(tempCard, element)).join(''); // add them together in 1 html
+        res.writeHead(200, {'Content-type': 'text/html'}); // Tells browser to expect HTML
+        /*
+        "map" indexes through each item in dataObj and runs replaceTemplate for each, returning a 
+        new array of HTML strings. _ is just a changing index number for each item in the array. 
+        _ gets passed to replaceTemplate as the product data index.
+        "join('')" replaces the commas with '' combining all the HTML strings into one big string
+        Finally cardsHtml becomes an string thats populated with the 5 product cards
+        */
+        const cardsHtml = dataObj.map(_ => replaceTemplate(tempCard, _)).join('');
+        // Output becomes the template-overview.html, but with the cardsHtlm inserted 
         const output = tempOverview.replace('{%PRODUCT_CARDS%}', cardsHtml);
-        //console.log(cardsHtml);
 
-        res.end(output);
+        res.end(output); // Sends the response and closes the connection
         
         // Product page
     } else if (pathname === '/product') {
-        res.writeHead(200, {'Content-type': 'text/html'});
+        res.writeHead(200, {'Content-type': 'text/html'}); // Tells browser to expect HTML
         const product = dataObj[query.id]; //Get product number from the query
         const output = replaceTemplate(tempProduct, product) //Run function with new product number
         //res.end('This is the product route');
         
-        res.end(output);
+        res.end(output); // Sends the response and closes the connection
     // API
     } else if (pathname === '/api') {
         // More efficiant, only pasing the data that was once read in top code
-        res.writeHead(200, { 'Content-type': 'application/json'}); // to send json
+        res.writeHead(200, { 'Content-type': 'application/json'}); // Tells browser to expect JSON data
         res.end(data); // Sending raw json data
     
     // Not found
     } else {
         res.writeHead(404, { // Never send headers after the response
-            'Content-type': 'text/html', // to send html
+            'Content-type': 'text/html', // Tells browser to expect HTML
             'my-own-header': 'hello-world'
         });
-        res.end('<h1>Page not found!</h1>');
+        res.end('<h1>Page not found!</h1>'); // Sends the response and closes the connection
     }
         
 });
@@ -84,3 +86,15 @@ const server = http.createServer((req, res) => {
 server.listen(8000, '127.0.0.1', () => {
     console.log('Listening to requests on port 8000');
 });
+
+/* What is .end?
+It finishes the response and sends data to the browser.
+Other options:
+
+res.write(data) to send data in chunks (before calling .end)
+res.end() with no argument just closes the response
+How to explore available functions for these methods?
+Use MDN Web Docs for JavaScript and Node.js documentation.
+For Node.js-specific methods, check the Node.js API docs.
+In VS Code, hover over a method or press Ctrl+Click to see its definition and documentation.
+ */
