@@ -72,7 +72,6 @@ server.listen(8000, '127.0.0.1', () => {
 /* What is .end?
 It finishes the response and sends data to the browser.
 Other options:
-
 res.write(data) to send data in chunks (before calling .end)
 res.end() with no argument just closes the response
 How to explore available functions for these methods?
