@@ -3,7 +3,7 @@
 3. Then analyse if the results we thereafter get actualy makes sense.*/
 const fs = require('fs');
 const crypto = require('crypto'); 
-process.env.UV_THREADPOOL_SIZE = 3;
+process.env.UV_THREADPOOL_SIZE = 2;
 
 const start = Date.now();
 
