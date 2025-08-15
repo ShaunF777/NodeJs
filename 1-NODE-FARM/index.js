@@ -1,6 +1,7 @@
 const fs = require('fs');
 const http = require('http');
 const url = require('url');
+const slugify = require('slugify');
 const replaceTemplate = require('./modules/replaceTemplate');
 
 ////////////////////////
@@ -12,6 +13,9 @@ const tempProduct = fs.readFileSync(`${__dirname}/templates/template-product.htm
 
 const data = fs.readFileSync(`${__dirname}/dev-data/data.json`, 'utf8');
 const dataObj = JSON.parse(data); // Convert JSON string to a JavaScript object/array
+
+// map through dataObj, building a new array of slug names like "fresh avocados" 
+const slugs = dataObj.map(el => slugify(el.productName, {lower:true}));
 ///////////////////////
 // SERVER
 
@@ -41,7 +45,7 @@ const server = http.createServer((req, res) => {
         
         // Product page
     } else if (pathname === '/product') {
-        res.writeHead(200, {'Content-type': 'text/html'}); // Tells browser to expect HTML
+        res.writeHead(200, {"Content-type": 'text/html'}); // Tells browser to expect HTML
         const product = dataObj[query.id]; //Get product number from the query
         const output = replaceTemplate(tempProduct, product) //Run function with new product number
         //res.end('This is the product route');
