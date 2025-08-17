@@ -19,7 +19,7 @@ fs.readFile('test-file.txt', () => {
 
   process.nextTick(() => console.log('Process.nextTic'));
 
-  crypto.pbkdf2Sync('password', 'salt', 100000, 1024, 'sha512');
+  crypto.pbkdf2Sync('password', 'salt', 100000, 1024, 'sha512'); // will block because its synchronous
   console.log(Date.now() - start, 'Password encrypted');
 
   crypto.pbkdf2Sync('password', 'salt', 100000, 1024, 'sha512');

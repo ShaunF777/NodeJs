@@ -2,7 +2,7 @@
 const crypto = require('crypto');
 
 function runTest(threadPoolSize) {
-  return new Promise((resolve) => {
+  return new Promise((resolve) => { //
     process.env.UV_THREADPOOL_SIZE = threadPoolSize.toString();
     const start = Date.now();
 
@@ -30,7 +30,7 @@ function runTest(threadPoolSize) {
 }
 
 (async () => {
-  await runTest(4);   // limited threads
+  await runTest(6);   // limited threads
   await runTest(12);  // matches CPU threads
 })();
 

@@ -1,4 +1,4 @@
-const EventEmitter = require('events'); // Standard name for aquring this bult in events class
+const EventEmitter = require('events'); // Standard name for aquring this built in events class
 
 const myEmitter = new EventEmitter(); // Create new instance or object of the created class
 
