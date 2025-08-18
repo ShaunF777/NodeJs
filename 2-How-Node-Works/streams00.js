@@ -41,22 +41,27 @@ server.listen(8000, '127.0.0.1', () => {
 });
 
 /*
-The pipe method in Node.js streams is a fundamental mechanism for efficiently transferring data between a readable stream and a writable stream. It streamlines the process of consuming data from a source and delivering it to a destination, automatically managing aspects like back pressure, pausing, and resuming.
+The pipe method in Node.js streams is a fundamental mechanism for efficiently transferring data between a readable stream and a writable stream. 
+It streamlines the process of consuming data from a source and delivering it to a destination, automatically managing aspects like back pressure, pausing, and resuming.
 Here's a breakdown of its key aspects:
 
-    Connecting Streams:
-    The pipe method is called on a readable stream and takes a writable stream as its argument. For example, readableStream.pipe(writableStream) establishes a connection where data flowing from readableStream is automatically directed to writableStream.
-    Automatic Data Flow Management:
+Connecting Streams:
+    The pipe method is called on a readable stream and takes a writable stream as its argument. For example, readableStream.pipe(writableStream) 
+    establishes a connection where data flowing from readableStream is automatically directed to writableStream.
+Automatic Data Flow Management:
     Unlike manual event handling (e.g., listening for 'data' events and manually writing to the destination), pipe handles the entire data transfer process, including:
         Back Pressure: It automatically manages the flow rate, preventing the writable stream from being overwhelmed by data from the readable stream.
         Pausing and Resuming: It intelligently pauses the readable stream when the writable stream is unable to process data fast enough and resumes it when capacity becomes available. 
-    Chaining Pipes:
-    The pipe method returns the destination stream, allowing for chaining multiple pipe calls. This is particularly useful when incorporating transform streams (which are both readable and writable) to perform intermediate operations on the data, such as compression or encryption. For instance, readableStream.pipe(transformStream).pipe(writableStream).
-    Use Cases:
+Chaining Pipes:
+    The pipe method returns the destination stream, allowing for chaining multiple pipe calls. This is particularly useful when incorporating transform streams 
+    (which are both readable and writable) to perform intermediate operations on the data, such as compression or encryption. 
+    For instance, readableStream.pipe(transformStream).pipe(writableStream).
+Use Cases:
     The pipe method is widely used for various tasks, including:
         File Operations: Efficiently copying files by piping a read stream to a write stream.
         Network Communication: Piping data from an incoming network connection to an outgoing one.
         Data Processing Pipelines: Creating chains of streams for complex data transformations. 
     Simplicity and Efficiency:
-    By abstracting away the complexities of manual stream management, pipe simplifies code, reduces boilerplate, and enhances application performance, especially in scenarios involving large data volumes or real-time data processing. 
+    By abstracting away the complexities of manual stream management, pipe simplifies code, reduces boilerplate, and enhances application performance, 
+    especially in scenarios involving large data volumes or real-time data processing. 
 */
