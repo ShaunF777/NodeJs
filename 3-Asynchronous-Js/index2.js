@@ -23,6 +23,7 @@ fs.readFile(`${__dirname}/dog.txt`, (err, data) => {
       console.log(res.body);
       // 3. Callback to save the image url
       fs.writeFile('dog-img.txt', res.body.message, (err) => {
+        if (err) return console.log(err.message);
         console.log('Random dog image saved to file!');
       });
     });
