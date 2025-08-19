@@ -20,7 +20,7 @@ const writeFilePro = (file, data) => {
   });
 };
 // 'async' lets interpreter know that this is an asynchronous function that must run seperately in the thread pool without blocking the event loop and return a promise
-// it can have multiple awaits inside
+// multiple awaits inside an await block allows the code to look more synchronous but still function asynchronously, this is called syntactic suger
 const getDogPic = async () => {
   try {
     const thenResult = await readFilePro(`${__dirname}/dogff.txt`); // 'await' will pause the code untill promise fulfilled, then return the resolved value
