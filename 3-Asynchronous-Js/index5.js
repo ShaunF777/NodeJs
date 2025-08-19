@@ -6,7 +6,7 @@ const readFilePro = (file) => {
   return new Promise((resolve, reject) => {
     fs.readFile(file, (err, data) => {
       if (err) reject('I cound not find that file 💆');
-      resolve(data.toString());
+      resolve(data);
     });
   });
 };
@@ -22,14 +22,18 @@ const writeFilePro = (file, data) => {
 // 'async' lets interpreter know that this is an asynchronous function that must run seperately in the thread pool without blocking the event loop and return a promise
 // it can have multiple awaits inside
 const getDogPic = async () => {
-  const thenResult = await readFilePro(`${__dirname}/dog.txt`); // 'await' will pause the code untill promise fulfilled, then return the resolved value
-  console.log(`Breed from file: ${thenResult}`);
+  try {
+    const thenResult = await readFilePro(`${__dirname}/dogff.txt`); // 'await' will pause the code untill promise fulfilled, then return the resolved value
+    console.log(`Breed from file: ${thenResult}`);
 
-  const res = await superagent.get(`https://dog.ceo/api/breed/${thenResult}/images/random`);
-  console.log(res.body);
+    const res = await superagent.get(`https://dog.ceo/api/breed/${thenResult}/images/random`);
+    console.log(res.body);
 
-  await writeFilePro('dog-img.txt', res.body.message);
-  console.log('Random dog image saved to file!');
+    await writeFilePro('dog-img.txt', res.body.message);
+    console.log('Random dog image saved to file!');
+  } catch (err) {
+    console.log(err);
+  }
 };
 
 getDogPic();

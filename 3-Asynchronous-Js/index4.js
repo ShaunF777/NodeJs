@@ -8,7 +8,7 @@ const readFilePro = (file) => {
   return new Promise((resolve, reject) => {
     fs.readFile(file, (err, data) => {
       if (err) reject('I cound not find that file 💆'); // Rejects the Promise if file not found
-      resolve(data.toString()); // Resolves the Promise for the .then handler to return this 'data'
+      resolve(data); // Resolves the Promise for the .then handler to return this 'data'
     });
   });
 };
