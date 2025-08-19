@@ -30,6 +30,7 @@ const getDogPic = async () => {
     console.log('Random dog image saved to file!');
   } catch (err) {
     console.log(err);
+    throw err; // Throw err will mark this entire promise as 'REJECTED' allowing the outside catch method to run
   }
   return '2: Ready 🐕‍🦺🐕‍🦺🐕‍🦺';
 };
@@ -38,8 +39,11 @@ console.log('1: Will get dog pics!');
 //const x = getDogPic(); // Run's backend, and only serves when done.
 //console.log(x); // Will return 'Promise { <pending> }'
 // But this way getDogPic returns a promise, .then method gives access to it's future output ('2: Ready 🐕‍🦺🐕‍🦺🐕‍🦺')
-getDogPic().then((x) => {
-  console.log(x);
-  console.log('3: Done getting dog pics!'); // All other output that we want after the async function, must be inside .then block   
-});
-
+getDogPic()
+  .then((x) => {
+    console.log(x);
+    console.log('3: Done getting dog pics!'); // All other output that we want after the async function, must be inside .then block
+  })
+  .catch((err) => {
+    console.log('ERROR 💣');
+  });
