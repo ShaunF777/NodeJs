@@ -1,4 +1,4 @@
-// Now we want to promisify the fs.read and fs.write parts of the code, to work with ES6
+// For ES6 Now we want to promisify the fs.read and fs.write parts of the code.
 const superagent = require('superagent');
 const fs = require('fs');
 
@@ -23,12 +23,18 @@ const writeFilePro = (file, data) => {
 };
 
 /** Returning the function, each time allows us to have a flat structure of chained promises rather then nested callbacks.
- * Seems almost like an if or switch loop:
- * If promise made {
- *   .then do this;
- *   .then do this;
- * .catch problems;
+/** Promise chains explained:
+ * Think of it like an assembly line 🛠:
+ * - Step 1: One worker (a .then handler) receives the item (resolved value).
+ * - Step 2: That worker can modify it, or hand it to another worker (.then).
+ * - Step 3: Each .then passes its result to the next .then in line.
+ * - If something goes wrong at any step (a reject or error),
+ *   the whole line stops and sends the error to the .catch handler.
+ * 
+ * This way, promises let us write asynchronous steps in sequence
+ * without nesting callbacks ("callback hell").
  */
+
 // Step 1: Read the breed name from a local text file
 readFilePro(`${__dirname}/dog.txt`)
   // then method only handles fulfilled promises and needs .catch for possible errors at the end
@@ -53,3 +59,9 @@ readFilePro(`${__dirname}/dog.txt`)
     // - file write error
     console.log(err);
   });
+
+  /**🛠 Key Differences from if/switch
+
+If/Switch: Branching logic → “choose one path depending on condition.”
+
+Promise chain: Sequential logic → “do this, then this, then this, unless something fails.” */
