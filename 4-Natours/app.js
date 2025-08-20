@@ -47,6 +47,8 @@ app.post('/', (req, res) => {
 // -------------------------
 const port = 3000; 
 // app.listen() starts the HTTP server, similar to using http.createServer() in raw Node.js
+// It binds the app to a network port, allowing it to accept incoming requests.
 app.listen(port, () => {
   console.log(`App running on port ${port}...`);
 });
+
