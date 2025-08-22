@@ -63,3 +63,9 @@ const port = 3000;
 app.listen(port, () => {
   console.log(`App running on port ${port}...`);
 });
+
+/**Test the endpoints: Open Postman and test the two routes you've created:
+ * For the GET request, select the GET method, enter http://127.0.0.1:3000/ in the URL bar, and click 'Send'. 
+ * You should receive the JSON response.
+ * For the POST request, select the POST method, use the same URL, and click 'Send'. 
+ * You should see the string "You can POST to this endpoint..." in the response body. */
