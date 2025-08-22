@@ -1,34 +1,45 @@
+// --- DEPENDENCIES & SETUP ---
 const express = require('express');
 const fs = require('fs');
 
-// This "app" has methods to define routes, middleware, and configuration
-const app = express(); // Calling express() creates an application object
+const app = express();
 
-// Run once and parse Json data into an array of javascript objects kept for later use inside tours
+// --- GLOBAL CONFIGURATION (middleware) ---
+app.use(express.json());
+
+// Run once and parse Json data into an array of javascript objects kept for later use
 const tours = JSON.parse(fs.readFileSync(`${__dirname}/dev-data/data/tours-simple.json`));
 
-// -------------------------
-// ROUTES
-// -------------------------
-// Good practice to keep versions, for updates and testing updates
+// --- ROUTES & ROUTE HANDLERS ---
 app.get('/api/v1/tours', (req, res) => {
-  // route handler req, res will reply with the a list of tour data
   res.status(200).json({
     status: 'success',
     results: tours.length, // For client info when sending arrays
     data: {
-      // Normally tours(key route) : tours(value object)
       tours, // ES6 way if key and value has the same name
     },
   });
 });
 
-// -------------------------
-// START SERVER
-// -------------------------
+app.post('/api/v1/tours', (req, res) => {
+  // Test with postman if console.log(req.body); returns this body { name: 'Test Tour', duration: 10, difficulty: 'easy' }
+  const newId = tours[tours.length - 1].id + 1;
+  const newTour = Object.assign({ id: newId }, req.body);
+
+  tours.push(newTour);
+  fs.writeFile(`${__dirname}/dev-data/data/tours-simple.json`, JSON.stringify(tours), (err) => {
+    res.status(201).json({
+      status: 'success',
+      data: {
+        tour: newTour,
+      },
+    });
+  });
+});
+
+// --- START SERVER ---
+
 const port = 3000;
-// app.listen() starts the HTTP server, similar to using http.createServer() in raw Node.js
-// It binds the app to a network port, allowing it to accept incoming requests.
 app.listen(port, () => {
   console.log(`App running on port ${port}...`);
 });
