@@ -27,12 +27,13 @@ app.get('/api/v1/tours', (req, res) => {
 app.get('/api/v1/tours/:id', (req, res) => {
   console.log(req.params); // `req.params` is an object that holds the URL parameters.
   const id = req.params.id * 1; // convert string to number
-  
+
   const tour = tours.find((el) => el.id === id); // Create new array with only the found id
 
   // A JSend status of 'fail' is used for a 404 response.
   //if (id > tours.length) {  when client request is GET 127.0.0.1:3000/api/v1/tours/23
-  if (!tour) { // We check if the tour exists before attempting to send the data.
+  if (!tour) {
+    // We check if the tour exists before attempting to send the data.
     return res.status(404).json({
       status: 'fail',
       message: 'Invalid ID',
