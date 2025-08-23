@@ -25,7 +25,7 @@ app.get('/api/v1/tours', (req, res) => {
 // OPTIONAL routes are defined using app.get('/api/v1/tours/:id/:x/:y?', (req, res)
 // use GET 127.0.0.1:3000/api/v1/tours/5/23 would log { id: '5', x: '23', y: undefined }
 app.get('/api/v1/tours/:id', (req, res) => {
-  console.log(req.params);
+  console.log(req.params); // `req.params` is an object that holds the URL parameters.
   const id = req.params.id * 1; // convert string to number
   const tour = tours.find((el) => el.id === id); // Create new array with only the found id
 
@@ -40,7 +40,7 @@ app.get('/api/v1/tours/:id', (req, res) => {
   res.status(200).json({
     status: 'success',
     data: {
-      tours: tour,
+      tour,
     },
   });
 });
