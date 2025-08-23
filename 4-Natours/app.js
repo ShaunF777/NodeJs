@@ -10,6 +10,7 @@ app.use(express.json());
 const tours = JSON.parse(fs.readFileSync(`${__dirname}/dev-data/data/tours-simple.json`));
 
 // --- ROUTES & ROUTE HANDLERS ---
+// ---Read---
 app.get('/api/v1/tours', (req, res) => {
   res.status(200).json({
     status: 'success',
@@ -19,27 +20,21 @@ app.get('/api/v1/tours', (req, res) => {
     },
   });
 });
-// Console.log(req.params) object using app.get('/api/v1/tours/:id/:x/:y', (req, res)
-// in postman use GET 127.0.0.1:3000/api/v1/tours/5/23/45
-// and the log will print { id: '5', x: '23', y: '45' }
-// OPTIONAL routes are defined using app.get('/api/v1/tours/:id/:x/:y?', (req, res)
-// use GET 127.0.0.1:3000/api/v1/tours/5/23 would log { id: '5', x: '23', y: undefined }
-app.get('/api/v1/tours/:id', (req, res) => {
-  console.log(req.params); // `req.params` is an object that holds the URL parameters.
-  const id = req.params.id * 1; // convert string to number
-  
-  const tour = tours.find((el) => el.id === id); // Create new array with only the found id
 
-  // A JSend status of 'fail' is used for a 404 response.
-  //if (id > tours.length) {  when client request is GET 127.0.0.1:3000/api/v1/tours/23
-  if (!tour) { // We check if the tour exists before attempting to send the data.
+// ---Read---
+app.get('/api/v1/tours/:id', (req, res) => {
+  console.log(req.params);
+  const id = req.params.id * 1;
+
+  const tour = tours.find((el) => el.id === id);
+
+  if (!tour) {
     return res.status(404).json({
       status: 'fail',
       message: 'Invalid ID',
     });
   }
 
-  // If a tour is found, send it back with a 200 'OK' status.
   res.status(200).json({
     status: 'success',
     data: {
@@ -48,6 +43,7 @@ app.get('/api/v1/tours/:id', (req, res) => {
   });
 });
 
+// ---Create ---
 app.post('/api/v1/tours', (req, res) => {
   const newId = tours[tours.length - 1].id + 1;
   const newTour = Object.assign({ id: newId }, req.body);
@@ -63,8 +59,37 @@ app.post('/api/v1/tours', (req, res) => {
   });
 });
 
-// --- START SERVER ---
+// ---Patch(Only some properties to be Updated on the object)---
+app.patch('/api/v1/tours/:id', (req, res) => {
+  if (req.params.id * 1 > tours.length) {
+    return res.status(404).json({
+      status: 'fail',
+      message: 'Invalid ID',
+    });
+  }
+  res.status(200).json({
+    status: 'success',
+    data: {
+      tour: '<Updated tour here...>',
+    },
+  });
+});
 
+// ---Deletee properties to be Updated on the object)---
+app.delete('/api/v1/tours/:id', (req, res) => {
+  if (req.params.id * 1 > tours.length) {
+    return res.status(404).json({
+      status: 'fail',
+      message: 'Invalid ID',
+    });
+  }
+  res.status(204).json({ // 204 means no content
+    status: 'success',
+    data: null
+  });
+});
+
+// --- START SERVER ---
 const port = 3000;
 app.listen(port, () => {
   console.log(`App running on port ${port}...`);
