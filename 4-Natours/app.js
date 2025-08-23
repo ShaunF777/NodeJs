@@ -7,7 +7,6 @@ const app = express();
 // --- GLOBAL CONFIGURATION (middleware) ---
 app.use(express.json());
 
-// Run once and parse Json data into an array of javascript objects kept for later use
 const tours = JSON.parse(fs.readFileSync(`${__dirname}/dev-data/data/tours-simple.json`));
 
 // --- ROUTES & ROUTE HANDLERS ---
@@ -20,9 +19,33 @@ app.get('/api/v1/tours', (req, res) => {
     },
   });
 });
+// Console.log(req.params) object using app.get('/api/v1/tours/:id/:x/:y', (req, res)
+// in postman use GET 127.0.0.1:3000/api/v1/tours/5/23/45
+// and the log will print { id: '5', x: '23', y: '45' }
+// OPTIONAL routes are defined using app.get('/api/v1/tours/:id/:x/:y?', (req, res)
+// use GET 127.0.0.1:3000/api/v1/tours/5/23 would log { id: '5', x: '23', y: undefined }
+app.get('/api/v1/tours/:id', (req, res) => {
+  console.log(req.params);
+  const id = req.params.id * 1; // convert string to number
+  const tour = tours.find((el) => el.id === id); // Create new array with only the found id
+
+  //if (id > tours.length) {  when client request is GET 127.0.0.1:3000/api/v1/tours/23
+  if (!tour) {
+    return res.status(404).json({
+      status: 'fail',
+      message: 'Invalid ID',
+    });
+  }
+
+  res.status(200).json({
+    status: 'success',
+    data: {
+      tours: tour,
+    },
+  });
+});
 
 app.post('/api/v1/tours', (req, res) => {
-  // Test with postman if console.log(req.body); returns this body { name: 'Test Tour', duration: 10, difficulty: 'easy' }
   const newId = tours[tours.length - 1].id + 1;
   const newTour = Object.assign({ id: newId }, req.body);
 
