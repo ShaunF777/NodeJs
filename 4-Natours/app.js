@@ -14,9 +14,9 @@ const tours = JSON.parse(fs.readFileSync(`${__dirname}/dev-data/data/tours-simpl
 app.get('/api/v1/tours', (req, res) => {
   res.status(200).json({
     status: 'success',
-    results: tours.length, // For client info when sending arrays
+    results: tours.length,
     data: {
-      tours, // ES6 way if key and value has the same name
+      tours,
     },
   });
 });
