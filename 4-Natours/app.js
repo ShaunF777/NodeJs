@@ -25,10 +25,9 @@ app.use((req, res, next) => {
 // --- ROUTE HANDLERS (Controllers) are now imported from routs folder
 
 
-// ---ROUTES ---
-
-app.use('/api/v1/tours', tourRouter); // Mount subapplication for tourRouter
-app.use('/api/v1/users', userRouter); // Mount subapplication for userRouter
+// ---ROUTES middleware---
+app.use('/api/v1/tours', tourRouter); // Mount subapplication for tourRouter 
+app.use('/api/v1/users', userRouter); // Mount subapplication for userRouter 
 
 // --- START SERVER ---
 const port = 3000;
