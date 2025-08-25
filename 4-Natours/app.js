@@ -3,16 +3,30 @@ const express = require('express');
 const fs = require('fs');
 
 const app = express();
+const morgan = require('morgan'); //Gives a nice log of whats happening
 
 // --- GLOBAL CONFIGURATION (middleware) ---
-app.use(express.json());
+app.use(express.json()); // 'use' Adds a function to our middleware stack
+app.use(morgan('dev')); // https://expressjs.com/en/resources/middleware.html
+
+app.use((req, res, next) => {
+  console.log('👉Hello from the middleware👈');
+  next();
+});
+
+app.use((req, res, next) => {
+  req.requestTime = new Date().toISOString();
+  next();
+});
 
 const tours = JSON.parse(fs.readFileSync(`${__dirname}/dev-data/data/tours-simple.json`));
 
-// --- ROUTES & ROUTE HANDLERS ---
+// --- ROUTE HANDLERS ---
 const getAllTours = (req, res) => {
+  console.log(req.requestTime);
   res.status(200).json({
     status: 'success',
+    requestedAt: req.requestTime,
     results: tours.length,
     data: {
       tours,
@@ -91,8 +105,10 @@ const deleteTour = (req, res) => {
 // app.patch('/api/v1/tours/:id', updateTour);
 // app.delete('/api/v1/tours/:id', deleteTour);
 
+// ---ROUTES ---
 app.route('/api/v1/tours').get(getAllTours).post(createTour);
 app.route('/api/v1/tours/:id').get(getTour).patch(updateTour).delete(deleteTour);
+app.route('api/v1/users').get(getAllUsers).post(createUser);
 
 // --- START SERVER ---
 const port = 3000;
