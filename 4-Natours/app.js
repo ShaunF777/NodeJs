@@ -21,7 +21,7 @@ app.use((req, res, next) => {
 
 const tours = JSON.parse(fs.readFileSync(`${__dirname}/dev-data/data/tours-simple.json`));
 
-// --- ROUTE HANDLERS ---
+// --- ROUTE HANDLERS (Controllers)---
 const getAllTours = (req, res) => {
   console.log(req.requestTime);
   res.status(200).json({
@@ -136,10 +136,17 @@ const deleteUser = (req, res) => {
 };
 
 // ---ROUTES ---
-app.route('/api/v1/tours').get(getAllTours).post(createTour);
-app.route('/api/v1/tours/:id').get(getTour).patch(updateTour).delete(deleteTour);
-app.route('/api/v1/users').get(getAllUsers).post(createUser);
-app.route('/api/v1/users/:id').get(getUser).patch(updateUser).delete(deleteUser);
+const tourRouter = express.Router();
+const userRouter = express.Router();
+
+tourRouter.route('/').get(getAllTours).post(createTour); // The root / refers to the /api/v1/tours 
+tourRouter.route('/:id').get(getTour).patch(updateTour).delete(deleteTour);
+
+userRouter.route('/').get(getAllUsers).post(createUser); // The root / refers to the /api/v1/users 
+userRouter.route('/:id').get(getUser).patch(updateUser).delete(deleteUser);
+
+app.use('/api/v1/tours', tourRouter); // Mount subapplication for tourRouter
+app.use('/api/v1/users', userRouter); // Mount subapplication for userRouter
 
 // --- START SERVER ---
 const port = 3000;
