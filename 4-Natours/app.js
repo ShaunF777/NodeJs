@@ -25,9 +25,8 @@ app.use((req, res, next) => {
 });
 
 // --- ROUTE FLOW goes like this ---
-// 1. We recieve the request here. 
-// 2. Depending on the request, it goes to the sub application routers
-// 3. Depenting on the route and request, it will execute one of the controller functions
+// 1. Depending on the request, it goes to the sub application routers
+// 2. Depenting on the route and request, it will execute one of the controller functions
 
 // ---ROUTES middleware---
 app.use('/api/v1/tours', tourRouter); // Mount subapplication for tourRouter 
