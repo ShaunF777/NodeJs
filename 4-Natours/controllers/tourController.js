@@ -1,8 +1,11 @@
-const fs = require('fs');
+const fs = require('fs'); // Needed to access the data in simple-tours.json
 
-const tours = JSON.parse(fs.readFileSync(`${__dirname}/../dev-data/data/tours-simple.json`));
+const tours = JSON.parse(
+  fs.readFileSync(`${__dirname}/../dev-data/data/tours-simple.json`)
+);
 
 exports.getAllTours = (req, res) => {
+  // Loads this getAllTours module onto the exports Object
   console.log(req.requestTime);
   res.status(200).json({
     status: 'success',
@@ -40,14 +43,18 @@ exports.createTour = (req, res) => {
   const newTour = Object.assign({ id: newId }, req.body);
 
   tours.push(newTour);
-  fs.writeFile(`${__dirname}/dev-data/data/tours-simple.json`, JSON.stringify(tours), (err) => {
-    res.status(201).json({
-      status: 'success',
-      data: {
-        tour: newTour,
-      },
-    });
-  });
+  fs.writeFile(
+    `${__dirname}/dev-data/data/tours-simple.json`,
+    JSON.stringify(tours),
+    (err) => {
+      res.status(201).json({
+        status: 'success',
+        data: {
+          tour: newTour,
+        },
+      });
+    }
+  );
 };
 
 exports.updateTour = (req, res) => {

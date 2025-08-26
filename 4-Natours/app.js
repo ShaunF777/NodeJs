@@ -1,10 +1,11 @@
 // --- DEPENDENCIES & SETUP ---
 
 const express = require('express');
-const morgan = require('morgan'); //Gives a nice log of whats happening
+const morgan = require('morgan'); // Logs routing feedback in console
 
-const tourRouter = require('./routes/tourRoutes')
-const userRouter = require('./routes/userRoutes')
+// Import the routers that imports their handler modules from controllers folder
+const tourRouter = require('./routes/tourRoutes') // imports the whole file
+const userRouter = require('./routes/userRoutes') 
 
 const app = express();
 
