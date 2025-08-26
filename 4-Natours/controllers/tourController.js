@@ -1,20 +1,35 @@
 const fs = require('fs'); // Needed to access the data in simple-tours.json
+const { stringify } = require('querystring');
 
 const tours = JSON.parse(
   fs.readFileSync(`${__dirname}/../dev-data/data/tours-simple.json`)
 );
 
+// This middleware checks if the ID is valid based on the number of tours.
 exports.checkID = (req, res, next, val) => {
   console.log(`Tour id is: ${val}`);
-  
-  if (req.params.id * 1 > tours.length) {
+  // The condition is updated to correctly check if the ID is out of bounds.
+  if (val * 1 > tours.length) {
     return res.status(404).json({
       status: 'fail',
       message: 'Invalid ID',
     });
   }
-  next()
-}
+  next();
+};
+// This middleware checks if the request body contains 'name' and 'price' properties.
+exports.checkBody = (req, res, next) => {
+  const request = stringify(req.body);
+  console.log(`Request body: ${request}`);
+  if (!req.body.name || !req.body.price) {
+    return res.status(400).json({
+      status: 'fail',
+      message: 'Missing name or price',
+    });
+  }
+  // If the body is valid, we call `next()` to proceed to the next middleware in the stack (createTour).
+  next();
+};
 
 // Loads this getAllTours module onto the exports Object
 exports.getAllTours = (req, res) => {

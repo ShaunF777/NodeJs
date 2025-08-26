@@ -4,14 +4,20 @@ const tourController = require('./../controllers/tourController'); // imports th
 
 const router = express.Router();
 
-// Param middleware only runs for certain parameters like an id
+// The router.param middleware is used to pre-process URL parameters.
+// The `checkID` middleware will run only when the 'id' parameter is present in a route.
 router.param('id', tourController.checkID); // Express apps run this way
+
+// Create a checkBody middleware
+// Check if body contains the name and price property
+// if not, send back 400 (bad request)
+// Add it to the post handler stack
 
 router
   // The root '/' refers to the /api/v1/tours in app.js middleware
   .route('/')
   .get(tourController.getAllTours)
-  .post(tourController.createTour);
+  .post(tourController.checkBody, tourController.createTour);
 router
   // '/:id' refers to the /api/v1/tours in app.js middleware
   .route('/:id')
