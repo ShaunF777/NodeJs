@@ -23,8 +23,10 @@ app.use((req, res, next) => {
   next();
 });
 
-// --- ROUTE HANDLERS (Controllers) are now imported from routs folder
-
+// --- ROUTE FLOW goes like this ---
+// 1. We recieve the request here. 
+// 2. Depending on the request, it goes to the sub application routers
+// 3. Depenting on the route and request, it will execute one of the controller functions
 
 // ---ROUTES middleware---
 app.use('/api/v1/tours', tourRouter); // Mount subapplication for tourRouter 
