@@ -1,4 +1,5 @@
 // --- DEPENDENCIES & SETUP ---
+// All express related configuration (middleware) happens here
 
 const express = require('express');
 const morgan = require('morgan'); // Logs routing feedback in console
@@ -32,8 +33,4 @@ app.use((req, res, next) => {
 app.use('/api/v1/tours', tourRouter); // Mount subapplication for tourRouter 
 app.use('/api/v1/users', userRouter); // Mount subapplication for userRouter 
 
-// --- START SERVER ---
-const port = 3000;
-app.listen(port, () => {
-  console.log(`App running on port ${port}...`);
-});
+module.exports = app; // Allow export of the whole application configuration in one file
