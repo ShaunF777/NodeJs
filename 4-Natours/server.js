@@ -1,9 +1,9 @@
 // --- START SERVER ---
 // This is our entrypoint. To use other modules like the express, database config, debug/error handling, environment variables
 const dotenv = require('dotenv');
-dotenv.config({ path: './config.env' }); // Read the variables and save them into NODE.js environment variables 
-
 const app = require('./app'); // Express related module
+
+dotenv.config({ path: './config.env' }); // Read the variables and save them into NODEjs environment variables.
 
 console.log(process.env); // Env variables loaded onto the node process
 console.log(app.get('env')); // Global environment variable used by Express to define the env that the node app is running in
