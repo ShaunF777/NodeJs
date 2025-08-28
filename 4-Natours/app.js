@@ -11,7 +11,11 @@ const userRouter = require('./routes/userRoutes');
 const app = express();
 
 // --- GLOBAL CONFIGURATION (middleware) ---
-app.use(morgan('dev')); // https://expressjs.com/en/resources/middleware.html
+// Only run logging when in the dev env
+if(process.env.NODE_ENV === 'development') { // Process env variables are always available 
+  app.use(morgan('dev')); // https://expressjs.com/en/resources/middleware.html
+};
+
 app.use(express.json()); // 'use' Adds a function to our middleware stack
 app.use(express.static(`${__dirname}/public`)); // Serves static files from a file 
 

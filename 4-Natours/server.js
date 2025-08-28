@@ -1,14 +1,14 @@
 // --- START SERVER ---
 // This is our entrypoint. To use other modules like the express, database config, debug/error handling, environment variables
 const dotenv = require('dotenv');
+dotenv.config({ path: './config.env' }); // Read the variables and save them into NODE.js environment variables 
+
 const app = require('./app'); // Express related module
 
-dotenv.config({ path: './config.env' }); // Read the variables and save them as NODE.js environment variables 
-
-console.log(process.env); // Node env variables
+console.log(process.env); // Env variables loaded onto the node process
 console.log(app.get('env')); // Global environment variable used by Express to define the env that the node app is running in
 
-const port = 3000;
+const port = process.env.PORT || 3000;
 app.listen(port, () => {
   console.log(`App running on port ${port}...`);
 });
