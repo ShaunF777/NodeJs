@@ -1,9 +1,27 @@
 // --- START SERVER ---
 // This is our entrypoint. To use other modules like the express, database config, debug/error handling, environment variables
+const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const app = require('./app'); // Express related module
 
 dotenv.config({ path: './config.env' }); // Read the variables and save them into NODEjs environment variables.
+
+// Replace the placeholder <PASSWORD> with the real pass word, so our connection string is complete
+const DB = process.env.DATABASE.replace(
+  '<PASSWORD>',
+  process.env.DATABASE_PASSWORD,
+);
+
+mongoose
+  .connect(DB, {
+    useNewUrlParser: true,
+    useCreateIndex: true,
+    useFindAndModify: false,
+  })
+  .then((con) => {
+    console.log(con.connections);
+    console.log('DB connection successful!');
+  });
 
 console.log(process.env); // Env variables loaded onto the node process
 console.log(app.get('env')); // Global environment variable used by Express to define the env that the node app is running in
