@@ -19,3 +19,5 @@ const tourSchema = new mongoose.Schema({
 
 // Create a model of the tourSchema schema. Model names to be capitalized.
 const Tour = mongoose.model('Tour', tourSchema); // (model name, schema name)
+
+module.exports = Tour;
