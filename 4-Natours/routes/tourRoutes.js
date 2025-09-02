@@ -6,7 +6,7 @@ const router = express.Router();
 
 // The router.param middleware is used to pre-process URL parameters.
 // The `checkID` middleware will run only when the 'id' parameter is present in a route.
-router.param('id', tourController.checkID); // Express apps run this way
+// router.param('id', tourController.checkID); // Express apps run this way
 
 // Create a checkBody middleware
 // Check if body contains the name and price property

@@ -1,6 +1,4 @@
-const fs = require('fs'); // Needed to access the data in simple-tours.json
 const Tour = require('./../models/tourModel');
-
 
 // Loads this getAllTours module onto the exports Object
 exports.getAllTours = (req, res) => {
@@ -31,11 +29,11 @@ exports.getTour = (req, res) => {
 
 exports.createTour = (req, res) => {
   res.status(201).json({
-        status: 'success',
-        // data: {
-        //   tour: newTour,
-        // },
-      });
+    status: 'success',
+    // data: {
+    //   tour: newTour,
+    // },
+  });
 };
 
 exports.updateTour = (req, res) => {
