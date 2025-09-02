@@ -26,11 +26,12 @@ mongoose
 //console.log(process.env); // Env variables loaded onto the node process
 //console.log(app.get('env')); // Global environment variable used by Express to define the env that the node app is running in
 
+// Specify a schema for our data with schema-type-options for validations or default values
 const tourSchema = new mongoose.Schema({
   name: {
     type: String,
     required: [true, 'A tour must have a name'],
-    unique: true // Allow two tour documents with the same name
+    unique: true, // Disallows two tour documents with the same name
   },
   rating: {
     type: Number,
@@ -41,6 +42,9 @@ const tourSchema = new mongoose.Schema({
     required: [true, 'A tour must have a price'],
   },
 });
+
+// Create a model of the tourSchema schema. Model names to be capitalized.
+const Tour = mongoose.model('Tour', tourSchema); // (model name, schema name)
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
