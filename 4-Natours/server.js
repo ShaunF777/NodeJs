@@ -27,9 +27,19 @@ mongoose
 //console.log(app.get('env')); // Global environment variable used by Express to define the env that the node app is running in
 
 const tourSchema = new mongoose.Schema({
-  name: String,
-  rating: Number,
-  price: Number,
+  name: {
+    type: String,
+    required: [true, 'A tour must have a name'],
+    unique: true // Allow two tour documents with the same name
+  },
+  rating: {
+    type: Number,
+    default: 4.5,
+  },
+  price: {
+    type: Number,
+    required: [true, 'A tour must have a price'],
+  },
 });
 
 const port = process.env.PORT || 3000;
