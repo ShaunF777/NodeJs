@@ -46,6 +46,20 @@ const tourSchema = new mongoose.Schema({
 // Create a model of the tourSchema schema. Model names to be capitalized.
 const Tour = mongoose.model('Tour', tourSchema); // (model name, schema name)
 
+// Remember that models are almost like classes.
+// Create a new document out of the model. testTour is now an instance of the model
+const testTour = new Tour({
+  name: 'The Forest Hiker',
+  rating: 4.7,
+  price: 497,
+});
+
+testTour.save().then((doc) => {
+  console.log(doc);
+}).catch(err => {
+  console.log('ERROR 💢: ', )
+})
+
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
   console.log(`App running on port ${port}...`);
