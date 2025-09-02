@@ -50,6 +50,7 @@ const Tour = mongoose.model('Tour', tourSchema); // (model name, schema name)
 // Create a new document out of the model. testTour is now an instance of the model
 const testTour = new Tour({
   name: 'The Park Camper',
+  price: 997,
 });
 
 testTour
