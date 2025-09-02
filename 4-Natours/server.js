@@ -19,7 +19,7 @@ mongoose
     useFindAndModify: false,
   })
   .then((con) => {
-    console.log(con.connections);
+    console.log(con.connections); // to show everything inside the connections object
     console.log('DB connection successful!');
   });
 
