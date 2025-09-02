@@ -18,8 +18,8 @@ mongoose
     useCreateIndex: true,
     useFindAndModify: false,
   })
-  .then((con) => {
-    console.log(con.connections); // to show everything inside the connections object
+  .then(() => {
+    //console.log(con.connections); // to show everything inside the connections object
     console.log('DB connection successful!');
   });
 
@@ -49,16 +49,17 @@ const Tour = mongoose.model('Tour', tourSchema); // (model name, schema name)
 // Remember that models are almost like classes.
 // Create a new document out of the model. testTour is now an instance of the model
 const testTour = new Tour({
-  name: 'The Forest Hiker',
-  rating: 4.7,
-  price: 497,
+  name: 'The Park Camper',
 });
 
-testTour.save().then((doc) => {
-  console.log(doc);
-}).catch(err => {
-  console.log('ERROR 💢: ', )
-})
+testTour
+  .save()
+  .then((doc) => {
+    console.log(doc);
+  })
+  .catch((err) => {
+    console.log('ERROR 💢: ', err);
+  });
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
