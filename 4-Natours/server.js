@@ -23,8 +23,14 @@ mongoose
     console.log('DB connection successful!');
   });
 
-console.log(process.env); // Env variables loaded onto the node process
-console.log(app.get('env')); // Global environment variable used by Express to define the env that the node app is running in
+//console.log(process.env); // Env variables loaded onto the node process
+//console.log(app.get('env')); // Global environment variable used by Express to define the env that the node app is running in
+
+const tourSchema = new mongoose.Schema({
+  name: String,
+  rating: Number,
+  price: Number,
+});
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
