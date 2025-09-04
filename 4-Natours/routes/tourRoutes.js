@@ -17,7 +17,8 @@ router
   // The root '/' refers to the /api/v1/tours in app.js middleware
   .route('/')
   .get(tourController.getAllTours)
-  .post(tourController.checkBody, tourController.createTour);
+  .post(tourController.createTour);
+  
 router
   // '/:id' refers to the /api/v1/tours in app.js middleware
   .route('/:id')

@@ -27,13 +27,24 @@ exports.getTour = (req, res) => {
   // });
 };
 
-exports.createTour = (req, res) => {
-  res.status(201).json({
-    status: 'success',
-    // data: {
-    //   tour: newTour,
-    // },
-  });
+exports.createTour = async (req, res) => {
+  try {
+    // Call the create method on the Tour model to create a new document
+    const newTour = await Tour.create(req.body); // waits for req.body to be filled
+
+    res.status(201).json({
+      status: 'success',
+      data: {
+        tour: newTour,
+      },
+    });
+  } catch (err) {
+    // Typically a creation validation error for rejected promise
+    res.status(400).json({
+      status: 'fail',
+      message: err,
+    });
+  }
 };
 
 exports.updateTour = (req, res) => {
