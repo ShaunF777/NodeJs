@@ -11,13 +11,10 @@ const DB = process.env.DATABASE.replace(
   '<PASSWORD>',
   process.env.DATABASE_PASSWORD,
 );
-// Connect to the database
+// Connect to the database, deal with deprecation warnings. .connect method returns a promise 
 mongoose
-  .connect(DB, {
-    useNewUrlParser: true,
-    useCreateIndex: true,
-    useFindAndModify: false,
-  })
+  .connect(process.env.DATABASE_LOCAL) // Local db connection
+  //.connect(DB) // We no longer need the options because the MongoDB Node.js driver has simplified things
   .then(() => {
     //console.log(con.connections); // to show everything inside the connections object
     console.log('DB connection successful!');
